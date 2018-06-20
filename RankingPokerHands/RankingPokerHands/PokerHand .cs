@@ -37,14 +37,7 @@ namespace RankingPokerHands
 
         private string[] ConvertToSortedHand(string hand)
         {
-            var temp = hand.Split(" ");
-            var temp2 = temp.OrderBy(p =>
-            {
-                var k = Array.IndexOf(_cardCompareMapper, p[0]);
-                return k;
-            });
-            var temp3 = temp2.ToArray();
-            return temp3;
+            return hand.Split(" ").OrderBy(p => Array.IndexOf(_cardCompareMapper, p[0])).ToArray();
         }
 
         public Result CompareWith(PokerHand hand)
@@ -67,15 +60,15 @@ namespace RankingPokerHands
                     .OrderByDescending(p => p.Count())
                     .Select(p => p.Key).ToArray();
 
-                if (Array.IndexOf(_cardCompareMapper, myHand[0]) > Array.IndexOf(_cardCompareMapper, opponentHand[0]))
+                if (IsCardBigger(myHand[0],opponentHand[0]))
                 {
                     return Result.Win;
                 }
                 
-                if (Array.IndexOf(_cardCompareMapper, myHand[0]) == Array.IndexOf(_cardCompareMapper, opponentHand[0]))
+                if (IsCardEqual(myHand[0],opponentHand[0]))
                 {
-                    return Array.IndexOf(_cardCompareMapper, myHand[1]) > Array.IndexOf(_cardCompareMapper, opponentHand[1]) ? Result.Win :
-                        Array.IndexOf(_cardCompareMapper, myHand[1]) == Array.IndexOf(_cardCompareMapper, opponentHand[1]) ? Result.Tie : Result.Loss;
+                    return IsCardBigger(myHand[1], opponentHand[1]) ? Result.Win :
+                        IsCardEqual(myHand[1], opponentHand[1]) ? Result.Tie : Result.Loss;
                 }
 
                 return Result.Loss;
@@ -85,14 +78,12 @@ namespace RankingPokerHands
             {
                 for (int i = 5; i > 0; i--)
                 {
-                    if (Array.IndexOf(_cardCompareMapper, _hand[i - 1][0]) >
-                        Array.IndexOf(_cardCompareMapper, hand.GetHand()[i - 1][0]))
+                    if (IsCardBigger(_hand[i - 1][0],hand.GetHand()[i - 1][0]))
                     {
                         return Result.Win;
                     }
 
-                    if (Array.IndexOf(_cardCompareMapper, _hand[i - 1][0]) ==
-                        Array.IndexOf(_cardCompareMapper, hand.GetHand()[i - 1][0]))
+                    if (IsCardEqual(_hand[i - 1][0],hand.GetHand()[i - 1][0]))
                     {
                         return Result.Loss;
                     }
@@ -130,6 +121,18 @@ namespace RankingPokerHands
             }
             
             return HandRanking.StraightFlush;
+        }
+
+        private bool IsCardBigger(char myHand, char opponentHand)
+        {
+            return Array.IndexOf(_cardCompareMapper, myHand) >
+                Array.IndexOf(_cardCompareMapper, opponentHand);
+        }
+
+        private bool IsCardEqual(char myHand, char opponentHand)
+        {
+            return Array.IndexOf(_cardCompareMapper, myHand) >
+                   Array.IndexOf(_cardCompareMapper, opponentHand);
         }
 
         private bool IsStraightFlush()
