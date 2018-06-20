@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace PokerHand.UnitTests
+namespace RankingPokerHands.UnitTests
 {
     [TestFixture]
     public class PokerHandTests

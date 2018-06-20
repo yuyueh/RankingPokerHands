@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RankingPokerHands", "RankingPokerHands\RankingPokerHands.csproj", "{ED8DC7F4-415D-4D77-907F-B264C786F165}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RankingPokerHands", "RankingPokerHands\RankingPokerHands.csproj", "{ED8DC7F4-415D-4D77-907F-B264C786F165}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FBBE6D5C-4DBF-4FB7-86B1-08A37D7E367A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{994B0B44-A372-419E-8813-FCEEE72FE290}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokerHand.UnitTests", "PokerHand.UnitTests\PokerHand.UnitTests.csproj", "{977B7F67-A445-40E3-AC7F-C50057951281}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RankingPokerHands.UnitTests", "PokerHand.UnitTests\RankingPokerHands.UnitTests.csproj", "{977B7F67-A445-40E3-AC7F-C50057951281}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
