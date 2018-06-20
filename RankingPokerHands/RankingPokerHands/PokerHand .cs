@@ -24,20 +24,40 @@ namespace RankingPokerHands
 
         public PokerHand(string hand)
         {
-            _hand = hand.Split(" ").OrderBy(p => Array.IndexOf(_cardCompareMapper, p[0])).ToArray();
+            _hand = ConvertToSortedHand(hand);
+        }
+
+        private string[] ConvertToSortedHand(string hand)
+        {
+            return hand.Split(" ").OrderBy(p => Array.IndexOf(_cardCompareMapper, p[0])).ToArray();
         }
 
         public Result CompareWith(PokerHand hand)
         {
-            return this.GetHandRanking() > hand.GetHandRanking() ? Result.Win : Result.Loss;
+            return GetHandRanking() > hand.GetHandRanking() ? Result.Win : Result.Loss;
         }
 
         public HandRanking GetHandRanking()
         {
-            return _hand.Select(p => p[1]).Distinct().Count() == 1 &&
-                   _hand.Select(p => p[0].ToString()).SequenceEqual<string>(_royalStraightMapper)
+            return IsRoyalStraightFlush()
                 ? HandRanking.RoyalStraightFlush
                 : HandRanking.StraightFlush;
+        }
+
+        private bool IsRoyalStraightFlush()
+        {
+            return IsFlush() && IsRoyalStraight();
+        }
+
+
+        private bool IsRoyalStraight()
+        {
+            return _hand.Select(p => p[0].ToString()).SequenceEqual<string>(_royalStraightMapper);
+        }
+
+        private bool IsFlush()
+        {
+            return _hand.Select(p => p[1]).Distinct().Count() == 1;
         }
     }
 }
