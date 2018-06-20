@@ -110,5 +110,20 @@ namespace RankingPokerHands.UnitTests
             Assert.AreEqual(result, expected);
         }
         
+        [Test]
+        public void Test_EqualStraightIsTie()
+        {
+            // Arrange
+            var target = new PokerHand("2S 3H 4H 5S 6C");
+            var opponentHand = new PokerHand("3D 4C 5H 6H 2S");
+            var expected = Result.Tie;
+
+            // Act
+            var result = target.CompareWith(opponentHand);
+
+            // Assert
+            Assert.AreEqual(result, expected);
+        }
+        
     }
 }
