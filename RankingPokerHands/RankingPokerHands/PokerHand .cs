@@ -15,7 +15,8 @@ namespace RankingPokerHands
         RoyalStraightFlush = 10,
         StraightFlush = 9,
         FourOfAKind = 8,
-        FullHouse = 7
+        FullHouse = 7,
+        Flush = 6
     }
 
     public class PokerHand
@@ -91,6 +92,11 @@ namespace RankingPokerHands
                 return HandRanking.RoyalStraightFlush;
             }
 
+            if (IsStraightFlush())
+            {
+                return HandRanking.StraightFlush;
+            }
+
             if (IsFourOfAKind())
             {
                 return HandRanking.FourOfAKind;
@@ -100,8 +106,23 @@ namespace RankingPokerHands
             {
                 return HandRanking.FullHouse;
             }
+
+            if (IsFlush())
+            {
+                return HandRanking.Flush;
+            }
             
             return HandRanking.StraightFlush;
+        }
+
+        private bool IsStraightFlush()
+        {
+            return IsFlush() && IsStraight();
+        }
+
+        private bool IsStraight()
+        {
+            return _hand.Select((p, i) => Array.IndexOf(_cardCompareMapper, p[0]) - i).Distinct().Count() == 1;
         }
 
         private bool IsFullHouse()
