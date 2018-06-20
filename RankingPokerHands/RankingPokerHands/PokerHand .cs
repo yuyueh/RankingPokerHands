@@ -16,7 +16,8 @@ namespace RankingPokerHands
         StraightFlush = 9,
         FourOfAKind = 8,
         FullHouse = 7,
-        Flush = 6
+        Flush = 6,
+        Straight = 5
     }
 
     public class PokerHand
@@ -118,6 +119,11 @@ namespace RankingPokerHands
             if (IsFlush())
             {
                 return HandRanking.Flush;
+            }
+
+            if (IsStraight())
+            {
+                return HandRanking.Straight;
             }
             
             return HandRanking.StraightFlush;
