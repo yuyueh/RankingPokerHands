@@ -54,7 +54,7 @@ namespace RankingPokerHands
 
         private Result CompareBySameHandType(PokerHand hand)
         {
-            if (HandRanking.FourOfAKind == GetHandRanking())
+            if (IsFourOfAKind())
             {
                 var myHand = _hand.Select(p => p[0])
                     .GroupBy(p => p)
@@ -79,7 +79,7 @@ namespace RankingPokerHands
                 return Result.Loss;
             }
 
-            if (HandRanking.Flush == GetHandRanking())
+            if (IsFlush())
             {
                 for (int i = 5; i > 0; i--)
                 {
@@ -95,13 +95,13 @@ namespace RankingPokerHands
                 }
             }
 
-            if (HandRanking.Straight == GetHandRanking())
+            if (IsStraight())
             {
                 return IsCardBigger(_hand[0][0], hand.GetHand()[0][0]) ? Result.Win :
                     IsCardEqual(_hand[0][0], hand.GetHand()[0][0]) ? Result.Tie : Result.Loss;
             }
 
-            if (HandRanking.OnePair == GetHandRanking())
+            if (IsOnePair())
             {
                 var myHand = _hand.GroupBy(p => p[0]).OrderByDescending(p => p.Count()).ThenBy(p => Array.IndexOf(_cardCompareMapper, p.Key)).Select(p => p.Key).ToArray();
                 var opponentHand = hand.GetHand().GroupBy(p => p[0]).OrderByDescending(p => p.Count()).ThenBy(p => Array.IndexOf(_cardCompareMapper, p.Key)).Select(p => p.Key).ToArray();
@@ -119,7 +119,7 @@ namespace RankingPokerHands
                 }
             }
 
-            if (HandRanking.Nothing == GetHandRanking())
+            if (IsNoThing())
             {
                 for (int i = 0; i < 5; i++)
                 {
@@ -136,6 +136,11 @@ namespace RankingPokerHands
             }
 
             return Result.Tie;
+        }
+
+        private bool IsNoThing()
+        {
+            return HandRanking.Nothing == GetHandRanking();
         }
 
         public HandRanking GetHandRanking()
