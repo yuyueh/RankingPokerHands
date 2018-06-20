@@ -119,6 +119,22 @@ namespace RankingPokerHands
                 }
             }
 
+            if (HandRanking.Nothing == GetHandRanking())
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    if (IsCardBigger(_hand[i][0],hand.GetHand()[0][0]))
+                    {
+                        return Result.Win;
+                    }
+
+                    if (IsCardEqual(_hand[i][0],hand.GetHand()[0][0]))
+                    {
+                        return Result.Loss;
+                    }
+                }
+            }
+
             return Result.Tie;
         }
 
