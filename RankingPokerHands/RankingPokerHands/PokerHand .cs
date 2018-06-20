@@ -88,7 +88,7 @@ namespace RankingPokerHands
                         return Result.Win;
                     }
 
-                    if (IsCardEqual(_hand[i - 1][0],hand.GetHand()[i - 1][0]))
+                    if (IsCardSmaller(_hand[i - 1][0],hand.GetHand()[i - 1][0]))
                     {
                         return Result.Loss;
                     }
@@ -112,7 +112,7 @@ namespace RankingPokerHands
                         return Result.Win;
                     }
 
-                    if (IsCardEqual(myHand[i],opponentHand[i]))
+                    if (IsCardSmaller(myHand[i],opponentHand[i]))
                     {
                         return Result.Loss;
                     }
@@ -123,12 +123,12 @@ namespace RankingPokerHands
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    if (IsCardBigger(_hand[i][0],hand.GetHand()[0][0]))
+                    if (IsCardBigger(_hand[i][0],hand.GetHand()[i][0]))
                     {
                         return Result.Win;
                     }
 
-                    if (IsCardEqual(_hand[i][0],hand.GetHand()[0][0]))
+                    if (IsCardSmaller(_hand[i][0],hand.GetHand()[i][0]))
                     {
                         return Result.Loss;
                     }
@@ -220,6 +220,12 @@ namespace RankingPokerHands
         private bool IsCardEqual(char myHand, char opponentHand)
         {
             return Array.IndexOf(_cardCompareMapper, myHand) ==
+                   Array.IndexOf(_cardCompareMapper, opponentHand);
+        }
+
+        private bool IsCardSmaller(char myHand, char opponentHand)
+        {
+            return Array.IndexOf(_cardCompareMapper, myHand) <
                    Array.IndexOf(_cardCompareMapper, opponentHand);
         }
 
