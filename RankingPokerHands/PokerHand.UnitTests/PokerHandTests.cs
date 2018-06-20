@@ -214,6 +214,20 @@ namespace RankingPokerHands.UnitTests
             // Assert
             Assert.AreEqual(result, expected);
         }
-        
+
+        [Test]
+        public void Test_HighestCardWins()
+        {
+            // Arrange
+            var target = new PokerHand("4S 5H 6H TS AC");
+            var opponentHand = new PokerHand("3S 5H 6H TS AC");
+            var expected = Result.Win;
+
+            // Act
+            var result = target.CompareWith(opponentHand);
+
+            // Assert
+            Assert.AreEqual(result, expected);
+        }
     }
 }
