@@ -1,6 +1,23 @@
-﻿namespace RankingPokerHands
+﻿using System;
+
+namespace RankingPokerHands
 {
-    public class PokerHand 
+    public enum Result 
+    { 
+        Win, 
+        Loss, 
+        Tie 
+    }
+
+    public class PokerHand
     {
+        public PokerHand(string hand)
+        {
+        }
+
+        public Result CompareWith(PokerHand hand)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
