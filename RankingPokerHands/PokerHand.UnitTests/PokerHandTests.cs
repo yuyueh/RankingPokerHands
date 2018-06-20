@@ -154,6 +154,20 @@ namespace RankingPokerHands.UnitTests
             // Assert
             Assert.AreEqual(result, expected);
         }
-        
+
+        [Test]
+        public void Test_TwoPairWinsOfPair()
+        {
+            // Arrange
+            var target = new PokerHand("2S 2H 4H 5S 4C");
+            var opponentHand = new PokerHand("AH AC 5H 6H 7S");
+            var expected = Result.Win;
+
+            // Act
+            var result = target.CompareWith(opponentHand);
+
+            // Assert
+            Assert.AreEqual(result, expected);
+        }
     }
 }
