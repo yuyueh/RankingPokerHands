@@ -100,6 +100,24 @@ namespace RankingPokerHands
                     IsCardEqual(_hand[0][0], hand.GetHand()[0][0]) ? Result.Tie : Result.Loss;
             }
 
+            if (HandRanking.OnePair == GetHandRanking())
+            {
+                var myHand = _hand.GroupBy(p => p[0]).OrderByDescending(p => p.Count()).ThenBy(p => Array.IndexOf(_cardCompareMapper, p.Key)).Select(p => p.Key).ToArray();
+                var opponentHand = hand.GetHand().GroupBy(p => p[0]).OrderByDescending(p => p.Count()).ThenBy(p => Array.IndexOf(_cardCompareMapper, p.Key)).Select(p => p.Key).ToArray();
+                for (int i = 0; i < 4; i++)
+                {
+                    if (IsCardBigger(myHand[i],opponentHand[i]))
+                    {
+                        return Result.Win;
+                    }
+
+                    if (IsCardEqual(myHand[i],opponentHand[i]))
+                    {
+                        return Result.Loss;
+                    }
+                }
+            }
+
             return Result.Tie;
         }
 
