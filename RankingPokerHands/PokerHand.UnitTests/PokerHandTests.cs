@@ -124,6 +124,21 @@ namespace RankingPokerHands.UnitTests
             // Assert
             Assert.AreEqual(result, expected);
         }
+
+        [Test]
+        public void Test_StraightWinsOfThreeOfAKind()
+        {
+            // Arrange
+            var target = new PokerHand("2S 3H 4H 5S 6C");
+            var opponentHand = new PokerHand("AH AC 5H 6H AS");
+            var expected = Result.Win;
+
+            // Act
+            var result = target.CompareWith(opponentHand);
+
+            // Assert
+            Assert.AreEqual(result, expected);
+        }
         
     }
 }
