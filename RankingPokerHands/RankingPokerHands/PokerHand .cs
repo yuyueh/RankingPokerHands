@@ -91,6 +91,12 @@ namespace RankingPokerHands
                 }
             }
 
+            if (HandRanking.Straight == GetHandRanking())
+            {
+                return IsCardBigger(_hand[0][0], hand.GetHand()[0][0]) ? Result.Win :
+                    IsCardEqual(_hand[0][0], hand.GetHand()[0][0]) ? Result.Tie : Result.Loss;
+            }
+
             return Result.Tie;
         }
 
@@ -137,7 +143,7 @@ namespace RankingPokerHands
 
         private bool IsCardEqual(char myHand, char opponentHand)
         {
-            return Array.IndexOf(_cardCompareMapper, myHand) >
+            return Array.IndexOf(_cardCompareMapper, myHand) ==
                    Array.IndexOf(_cardCompareMapper, opponentHand);
         }
 
