@@ -71,14 +71,31 @@ namespace RankingPokerHands
                 {
                     return Result.Win;
                 }
-                else if (Array.IndexOf(_cardCompareMapper, myHand[0]) == Array.IndexOf(_cardCompareMapper, opponentHand[0]))
+                
+                if (Array.IndexOf(_cardCompareMapper, myHand[0]) == Array.IndexOf(_cardCompareMapper, opponentHand[0]))
                 {
                     return Array.IndexOf(_cardCompareMapper, myHand[1]) > Array.IndexOf(_cardCompareMapper, opponentHand[1]) ? Result.Win :
                         Array.IndexOf(_cardCompareMapper, myHand[1]) == Array.IndexOf(_cardCompareMapper, opponentHand[1]) ? Result.Tie : Result.Loss;
                 }
-                else
+
+                return Result.Loss;
+            }
+
+            if (HandRanking.Flush == GetHandRanking())
+            {
+                for (int i = 5; i > 0; i--)
                 {
-                    return Result.Loss;
+                    if (Array.IndexOf(_cardCompareMapper, _hand[i - 1][0]) >
+                        Array.IndexOf(_cardCompareMapper, hand.GetHand()[i - 1][0]))
+                    {
+                        return Result.Win;
+                    }
+
+                    if (Array.IndexOf(_cardCompareMapper, _hand[i - 1][0]) ==
+                        Array.IndexOf(_cardCompareMapper, hand.GetHand()[i - 1][0]))
+                    {
+                        return Result.Loss;
+                    }
                 }
             }
 
