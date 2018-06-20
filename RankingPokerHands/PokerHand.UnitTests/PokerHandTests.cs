@@ -185,5 +185,21 @@ namespace RankingPokerHands.UnitTests
             Assert.AreEqual(result, expected);
         }
         
+        [Test]
+        public void Test_PairWinsOfNothing()
+        {
+            // Arrange
+            var target = new PokerHand("2S AH 4H 5S KC");
+            var opponentHand = new PokerHand("AH AC 5H 6H 7S");
+            var expected = Result.Loss;
+
+            // Act
+            var result = target.CompareWith(opponentHand);
+
+            // Assert
+            Assert.AreEqual(result, expected);
+        }
+        
+        
     }
 }
