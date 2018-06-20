@@ -49,5 +49,20 @@ namespace RankingPokerHands.UnitTests
             // Assert
             Assert.AreEqual(result, expected);
         }
+
+        [Test]
+        public void Test_4OfAKindWinsOfFullHouse()
+        {
+            // Arrange
+            var target = new PokerHand("2S AH 2H AS AC");
+            var opponentHand = new PokerHand("JS JD JC JH AD");
+            var expected = Result.Loss;
+
+            // Act
+            var result = target.CompareWith(opponentHand);
+
+            // Assert
+            Assert.AreEqual(result, expected);
+        }
     }
 }
