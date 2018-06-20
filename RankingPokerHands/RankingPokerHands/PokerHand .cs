@@ -13,7 +13,8 @@ namespace RankingPokerHands
     public enum HandRanking
     {
         RoyalStraightFlush = 10,
-        StraightFlush = 9
+        StraightFlush = 9,
+        FourOfAKind = 8
     }
 
     public class PokerHand
@@ -41,14 +42,18 @@ namespace RankingPokerHands
         {
             return IsRoyalStraightFlush()
                 ? HandRanking.RoyalStraightFlush
-                : HandRanking.StraightFlush;
+                : IsFourOfAKind() ? HandRanking.FourOfAKind : HandRanking.StraightFlush;
+        }
+
+        private bool IsFourOfAKind()
+        {
+            return _hand.Select(p => p[0]).GroupBy(p => p).Any(p => p.Count() >= 4);
         }
 
         private bool IsRoyalStraightFlush()
         {
             return IsFlush() && IsRoyalStraight();
         }
-
 
         private bool IsRoyalStraight()
         {
