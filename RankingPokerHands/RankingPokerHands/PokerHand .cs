@@ -18,7 +18,8 @@ namespace RankingPokerHands
         FullHouse = 7,
         Flush = 6,
         Straight = 5,
-        ThreeOfAKind = 4
+        ThreeOfAKind = 4,
+        TwoPair = 3
     }
 
     public class PokerHand
@@ -137,8 +138,19 @@ namespace RankingPokerHands
             {
                 return HandRanking.ThreeOfAKind;
             }
+
+            if (IsTwoPair())
+            {
+                return HandRanking.TwoPair;
+            }
             
             return HandRanking.StraightFlush;
+        }
+
+        private bool IsTwoPair()
+        {
+            var hand = _hand.GroupBy(p => p[0]).Select(p => p.Count()).OrderByDescending(p => p).ToArray();
+            return hand.Length == 3 && hand[0] == 2 && hand[1] == 2;
         }
 
         private bool IsThreeOfAKind()
