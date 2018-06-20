@@ -64,5 +64,22 @@ namespace RankingPokerHands.UnitTests
             // Assert
             Assert.AreEqual(result, expected);
         }
+
+        [Test]
+        public void Test_FullHouseWinsOfFlush()
+        {
+            // Arrange
+            var target = new PokerHand("2S AH 2H AS AC");
+            var opponentHand = new PokerHand("2H 3H 5H 6H 7H");
+            var expected = Result.Win;
+
+            // Act
+            var result = target.CompareWith(opponentHand);
+
+            // Assert
+            Assert.AreEqual(result, expected);
+        }
+
+        
     }
 }
