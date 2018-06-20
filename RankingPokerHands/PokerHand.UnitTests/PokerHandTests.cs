@@ -244,5 +244,12 @@ namespace RankingPokerHands.UnitTests
             // Assert
             Assert.AreEqual(result, expected);
         }
+
+        //7C 7S KH 2H 7H, Opponent hand: 7C 7S 3S 7H 5S
+        //TS KS 5S 9S AC, Opponent hand: JH 8S TH AH QH
+        //AC KH QH AH AS, Opponent hand: 7C 7S KH 2H 7H
+        //JH 8S TH AH QH, Opponent hand: KD 6S 9D TH AD
+        //7C 7S 3S 7H 5S, Opponent hand: 7C 7S KH 2H 7H
+        //JH 8S TH AH QH, Opponent hand: KD 6S 9D TH AD
     }
 }

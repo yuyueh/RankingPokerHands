@@ -79,6 +79,25 @@ namespace RankingPokerHands
                 return Result.Loss;
             }
 
+            if (IsFullHouse())
+            {
+                var myHand = _hand.GroupBy(p => p[0]).OrderByDescending(p => p.Count()).ThenByDescending(p => Array.IndexOf(_cardCompareMapper, p.Key)).Select(p => p.Key).ToArray();
+                var opponentHand = hand.GetHand().GroupBy(p => p[0]).OrderByDescending(p => p.Count()).ThenByDescending(p => Array.IndexOf(_cardCompareMapper, p.Key)).Select(p => p.Key).ToArray();
+
+                if (IsCardBigger(myHand[0], opponentHand[0]))
+                {
+                    return Result.Win;
+                }
+
+                if (IsCardEqual(myHand[0], opponentHand[0]))
+                {
+                    return IsCardBigger(myHand[1], opponentHand[1]) ? Result.Win :
+                    IsCardEqual(myHand[1], opponentHand[1]) ? Result.Tie : Result.Loss;
+                }
+
+                return Result.Loss;
+            }
+
             if (IsFlush())
             {
                 for (int i = 5; i > 0; i--)
@@ -101,10 +120,46 @@ namespace RankingPokerHands
                     IsCardEqual(_hand[0][0], hand.GetHand()[0][0]) ? Result.Tie : Result.Loss;
             }
 
+            if (IsThreeOfAKind())
+            {
+                var myHand = _hand.GroupBy(p => p[0]).OrderByDescending(p => p.Count()).ThenByDescending(p => Array.IndexOf(_cardCompareMapper, p.Key)).Select(p => p.Key).ToArray();
+                var opponentHand = hand.GetHand().GroupBy(p => p[0]).OrderByDescending(p => p.Count()).ThenByDescending(p => Array.IndexOf(_cardCompareMapper, p.Key)).Select(p => p.Key).ToArray();
+                for (int i = 0; i < 3; i++)
+                {
+                    if (IsCardBigger(myHand[i],opponentHand[i]))
+                    {
+                        return Result.Win;
+                    }
+
+                    if (IsCardSmaller(myHand[i],opponentHand[i]))
+                    {
+                        return Result.Loss;
+                    }
+                }
+            }
+
+            if (IsTwoPair())
+            {
+                var myHand = _hand.GroupBy(p => p[0]).OrderByDescending(p => p.Count()).ThenByDescending(p => Array.IndexOf(_cardCompareMapper, p.Key)).Select(p => p.Key).ToArray();
+                var opponentHand = hand.GetHand().GroupBy(p => p[0]).OrderByDescending(p => p.Count()).ThenByDescending(p => Array.IndexOf(_cardCompareMapper, p.Key)).Select(p => p.Key).ToArray();
+                for (int i = 0; i < 3; i++)
+                {
+                    if (IsCardBigger(myHand[i],opponentHand[i]))
+                    {
+                        return Result.Win;
+                    }
+
+                    if (IsCardSmaller(myHand[i],opponentHand[i]))
+                    {
+                        return Result.Loss;
+                    }
+                }
+            }
+
             if (IsOnePair())
             {
-                var myHand = _hand.GroupBy(p => p[0]).OrderByDescending(p => p.Count()).ThenBy(p => Array.IndexOf(_cardCompareMapper, p.Key)).Select(p => p.Key).ToArray();
-                var opponentHand = hand.GetHand().GroupBy(p => p[0]).OrderByDescending(p => p.Count()).ThenBy(p => Array.IndexOf(_cardCompareMapper, p.Key)).Select(p => p.Key).ToArray();
+                var myHand = _hand.GroupBy(p => p[0]).OrderByDescending(p => p.Count()).ThenByDescending(p => Array.IndexOf(_cardCompareMapper, p.Key)).Select(p => p.Key).ToArray();
+                var opponentHand = hand.GetHand().GroupBy(p => p[0]).OrderByDescending(p => p.Count()).ThenByDescending(p => Array.IndexOf(_cardCompareMapper, p.Key)).Select(p => p.Key).ToArray();
                 for (int i = 0; i < 4; i++)
                 {
                     if (IsCardBigger(myHand[i],opponentHand[i]))
@@ -121,14 +176,14 @@ namespace RankingPokerHands
 
             if (IsNoThing())
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 5; i > 0; i--)
                 {
-                    if (IsCardBigger(_hand[i][0],hand.GetHand()[i][0]))
+                    if (IsCardBigger(_hand[i - 1][0],hand.GetHand()[i - 1][0]))
                     {
                         return Result.Win;
                     }
 
-                    if (IsCardSmaller(_hand[i][0],hand.GetHand()[i][0]))
+                    if (IsCardSmaller(_hand[i - 1][0],hand.GetHand()[i - 1][0]))
                     {
                         return Result.Loss;
                     }
