@@ -34,5 +34,20 @@ namespace RankingPokerHands.UnitTests
             // Assert
             Assert.AreEqual(result, expected);
         }
+
+        [Test]
+        public void Highest4OfAKindWins()
+        {
+            // Arrange
+            var myHand = new PokerHand("AS AH 2H AD AC");
+            var opponentHand = new PokerHand("JS JD JC JH 3D");
+            var expected = Result.Win;
+
+            // Act
+            var result = myHand.CompareWith(opponentHand);
+
+            // Assert
+            Assert.AreEqual(result, expected);
+        }
     }
 }
