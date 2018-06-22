@@ -39,17 +39,19 @@ namespace RankingPokerHands
                 .Select(Card.Parse)
                 .OrderByDescending(p => p.Rank)
                 .ToList();
-            var comparesList = new List<Func<PokerHand, bool>>()
+            var comparesList = new List<Func<bool>>()
             {
-                (c) => hand.GroupBy(p => p.Suit).Any(p => p.Count() == 5) &&
+                () => hand.GroupBy(p => p.Suit).Any(p => p.Count() == 5) &&
                        hand.Select((p, i) => p.Rank - i).Distinct().Count() == 1 &&
                        hand.Last().Name.Equals('A'),                                   // 皇家
-                (c) => hand.GroupBy(p => p.Suit).Any(p => p.Count() == 5) &&
+                () => hand.GroupBy(p => p.Suit).Any(p => p.Count() == 5) &&
                        hand.Select((p, i) => p.Rank - i).Distinct().Count() == 1,      // 同花順
-                (c) => hand.GroupBy(p => p.Rank).Any(p => p.Count() == 4)              // 鐵支
+                () => hand.GroupBy(p => p.Rank).Any(p => p.Count() == 4),              // 鐵支
+                () => hand.GroupBy(p => p.Rank).Any(p => p.Count() == 3) &&
+                       hand.GroupBy(p => p.Rank).Any(p => p.Count() == 2)              // Full House
             };
 
-            _rank = (comparesList.Count - comparesList.FindIndex(f => f(this))) * (int)Math.Pow(10, 7);
+            _rank = (comparesList.Count - comparesList.FindIndex(f => f())) * (int)Math.Pow(10, 7);
             _baseScore = hand.GroupBy(p => p.Rank)
                 .OrderByDescending(p => p.Count())
                 .ThenByDescending(p => p.Key)
