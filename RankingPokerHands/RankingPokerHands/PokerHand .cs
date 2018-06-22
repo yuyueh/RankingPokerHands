@@ -35,20 +35,21 @@ namespace RankingPokerHands
 
         public PokerHand(string handString)
         {
-            var hand = handString.Split(' ')
-                .Select(Card.Parse)
+            var hand = handString.Split(' ').Select(Card.Parse)
                 .OrderByDescending(p => p.Rank)
                 .ToList();
             var comparesList = new List<Func<bool>>()
             {
-                () => hand.GroupBy(p => p.Suit).Any(p => p.Count() == 5) &&
-                       hand.Select((p, i) => p.Rank - i).Distinct().Count() == 1 &&
+                () => hand.GroupBy(p => p.Suit).Count() == 1 &&
+                       hand.Select((p, i) => p.Rank + i).Distinct().Count() == 1 &&
                        hand.Last().Name.Equals('A'),                                   // 皇家
-                () => hand.GroupBy(p => p.Suit).Any(p => p.Count() == 5) &&
-                       hand.Select((p, i) => p.Rank - i).Distinct().Count() == 1,      // 同花順
+                () => hand.GroupBy(p => p.Suit).Count() == 1 &&
+                       hand.Select((p, i) => p.Rank + i).Distinct().Count() == 1,      // 同花順
                 () => hand.GroupBy(p => p.Rank).Any(p => p.Count() == 4),              // 鐵支
                 () => hand.GroupBy(p => p.Rank).Any(p => p.Count() == 3) &&
-                       hand.GroupBy(p => p.Rank).Any(p => p.Count() == 2)              // Full House
+                       hand.GroupBy(p => p.Rank).Any(p => p.Count() == 2),             // Full House
+                () => hand.GroupBy(p => p.Suit).Count() == 1,                          // Flush
+                () => hand.Select((p, i) => p.Rank + i).Distinct().Count() == 1,       // 順
             };
 
             _rank = (comparesList.Count - comparesList.FindIndex(f => f())) * (int)Math.Pow(10, 7);
