@@ -23,18 +23,22 @@ namespace RankingPokerHands
             {
                 Name = input[0],
                 Suit = input[1],
-                Rank = "23456789TJQK".IndexOf(input[0])
+                Rank = "23456789TJQKA".IndexOf(input[0])
             };
         }
     }
 
     public class PokerHand
     {
-        private int _rank;
+        private readonly int _rank;
+        private readonly int _baseScore;
 
         public PokerHand(string handString)
         {
-            var hand = handString.Split(' ').Select(Card.Parse).OrderByDescending(p => p.Rank).ToList();
+            var hand = handString.Split(' ')
+                .Select(Card.Parse)
+                .OrderByDescending(p => p.Rank)
+                .ToList();
             var comparesList = new List<Func<PokerHand, bool>>()
             {
                 (c) => hand.GroupBy(p => p.Suit).Any(p => p.Count() == 5) &&
@@ -45,12 +49,17 @@ namespace RankingPokerHands
                 (c) => hand.GroupBy(p => p.Rank).Any(p => p.Count() == 4)              // 鐵支
             };
 
-            _rank = comparesList.Count - comparesList.FindIndex(f => f(this));
+            _rank = (comparesList.Count - comparesList.FindIndex(f => f(this))) * (int)Math.Pow(10, 7);
+            _baseScore = hand.GroupBy(p => p.Rank)
+                .OrderByDescending(p => p.Count())
+                .ThenByDescending(p => p.Key)
+                .Select((p, i) => new {Value = p.Key, Index = i})
+                .Sum(p => p.Value * (int) Math.Pow(13, 5 - p.Index));
         }
 
         public int GetRank()
         {
-            return _rank;
+            return _rank + _baseScore;
         }
 
         public Result CompareWith(PokerHand opponentHand)
