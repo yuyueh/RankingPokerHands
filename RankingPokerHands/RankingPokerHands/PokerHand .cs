@@ -30,21 +30,19 @@ namespace RankingPokerHands
 
     public class PokerHand
     {
-        private List<Card> _hand;
         private int _rank;
 
-        public PokerHand(string hand)
+        public PokerHand(string handString)
         {
-            _hand = hand.Split(' ').Select(Card.Parse).OrderByDescending(p => p.Rank).ToList();
-
+            var hand = handString.Split(' ').Select(Card.Parse).OrderByDescending(p => p.Rank).ToList();
             var comparesList = new List<Func<PokerHand, bool>>()
             {
-                (c) => _hand.GroupBy(p => p.Suit).Any(p => p.Count() == 5) &&
-                       _hand.Select((p, i) => p.Rank - i).Distinct().Count() == 1 &&
-                       _hand.Last().Name.Equals('A'),                                   // 皇家
-                (c) => _hand.GroupBy(p => p.Suit).Any(p => p.Count() == 5) &&
-                       _hand.Select((p, i) => p.Rank - i).Distinct().Count() == 1,      // 同花順
-                (c) => _hand.GroupBy(p => p.Rank).Any(p => p.Count() == 4)              // 鐵支
+                (c) => hand.GroupBy(p => p.Suit).Any(p => p.Count() == 5) &&
+                       hand.Select((p, i) => p.Rank - i).Distinct().Count() == 1 &&
+                       hand.Last().Name.Equals('A'),                                   // 皇家
+                (c) => hand.GroupBy(p => p.Suit).Any(p => p.Count() == 5) &&
+                       hand.Select((p, i) => p.Rank - i).Distinct().Count() == 1,      // 同花順
+                (c) => hand.GroupBy(p => p.Rank).Any(p => p.Count() == 4)              // 鐵支
             };
 
             _rank = comparesList.Count - comparesList.FindIndex(f => f(this));
