@@ -40,16 +40,16 @@ namespace RankingPokerHands
                 .ToList();
             var comparesList = new List<Func<bool>>()
             {
-                () => hand.GroupBy(p => p.Suit).Count() == 1 &&
-                       hand.Select((p, i) => p.Rank + i).Distinct().Count() == 1 &&
-                       hand.Last().Name.Equals('A'),                                   // 皇家
-                () => hand.GroupBy(p => p.Suit).Count() == 1 &&
-                       hand.Select((p, i) => p.Rank + i).Distinct().Count() == 1,      // 同花順
-                () => hand.GroupBy(p => p.Rank).Any(p => p.Count() == 4),              // 鐵支
-                () => hand.GroupBy(p => p.Rank).Any(p => p.Count() == 3) &&
-                       hand.GroupBy(p => p.Rank).Any(p => p.Count() == 2),             // Full House
-                () => hand.GroupBy(p => p.Suit).Count() == 1,                          // Flush
-                () => hand.Select((p, i) => p.Rank + i).Distinct().Count() == 1,       // 順
+                () => IsFlush(hand) &&
+                      IsStraight(hand) &&
+                      hand.Last().Name.Equals('A'),       // 皇家
+                () => IsFlush(hand) &&
+                      IsStraight(hand),                   // 同花順
+                () => IsSameValueWithTimes(hand, 4),      // 鐵支
+                () => IsSameValueWithTimes(hand, 3) &&
+                      IsSameValueWithTimes(hand, 2),      // Full House
+                () => IsFlush(hand),                      // Flush
+                () => IsStraight(hand),                   // 順
             };
 
             _rank = (comparesList.Count - comparesList.FindIndex(f => f())) * (int)Math.Pow(10, 7);
@@ -58,6 +58,21 @@ namespace RankingPokerHands
                 .ThenByDescending(p => p.Key)
                 .Select((p, i) => new {Value = p.Key, Index = i})
                 .Sum(p => p.Value * (int) Math.Pow(13, 5 - p.Index));
+        }
+
+        private bool IsSameValueWithTimes(List<Card> hand, int times)
+        {
+            return hand.GroupBy(p => p.Rank).Any(p => p.Count() == times);
+        }
+
+        private bool IsStraight(List<Card> hand)
+        {
+            return hand.Select((p, i) => p.Rank + i).Distinct().Count() == 1;
+        }
+
+        private bool IsFlush(List<Card> hand)
+        {
+            return hand.GroupBy(p => p.Suit).Count() == 1;
         }
 
         public int GetRank()
