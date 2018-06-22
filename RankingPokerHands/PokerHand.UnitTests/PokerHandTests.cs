@@ -64,5 +64,21 @@ namespace RankingPokerHands.UnitTests
             // Assert
             Assert.AreEqual(result, expected);
         }
+
+        [Test]
+        public void HighestFlushWins()
+        {
+            // Arrange
+            var myHand = new PokerHand("AS 3S 4S 8S 2S");
+            var opponentHand = new PokerHand("2H 3H 5H 6H 7H");
+            var expected = Result.Win;
+
+            // Act
+            var result = myHand.CompareWith(opponentHand);
+
+            // Assert
+            Assert.AreEqual(result, expected);
+        }
+        
     }
 }
